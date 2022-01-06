@@ -13,7 +13,6 @@ export async function login(loginData: userLogin){
         const user = await User.findOne({email : loginData.email})
         const validUser = await bcrypt.compare(loginData.password, user.password)
         if(validUser){
-            console.log(user)
             const token = signToken1(user)
             return token
         }

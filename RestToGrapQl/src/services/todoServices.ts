@@ -58,6 +58,7 @@ export async function createTodo(todoData: todoData, user: any){
 export async function updateTodo(id: string,todoData: todoData, completed = false){
     try{
         const todo = await Todo.findById(id)
+        console.log(completed, "status")
         if(completed){
             todo.completed = completed
         }else{

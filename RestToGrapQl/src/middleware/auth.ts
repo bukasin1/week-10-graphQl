@@ -55,7 +55,6 @@ export async function checkAuth(token: string){
     // try{
         if(token){
             const user: any = jwt.verify(token, secret) 
-            console.log(user, "auth") 
             return user._doc   
         }
         throw {

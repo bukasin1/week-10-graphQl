@@ -19,17 +19,17 @@ export async function createUser(req: Request, res: Response){
         // console.log(req.body)
         const validation = userSchema.validate(req.body)
         if(!req.body.cPassword){
-            // throw {
-            //     message : "Password not confirmed"
-            // } 
-            res.render('signup', {title : "Create an account", error : "Password not confirmed"})
+            throw {
+                message : "Password not confirmed"
+            } 
+            // res.render('signup', {title : "Create an account", error : "Password not confirmed"})
             return;
         }
         if(validation.error){
-            // res.status(404).send({
-            //     message : validation.error.details[0].message
-            // })
-            res.render('signup', {title : "Create an account", error : validation.error.details[0].message})
+            res.status(404).send({
+                message : validation.error.details[0].message
+            })
+            // res.render('signup', {title : "Create an account", error : validation.error.details[0].message})
             return;
         }
         const domainName = req.body.email.split('@')[1]
@@ -42,18 +42,18 @@ export async function createUser(req: Request, res: Response){
           return false;
         });
         if(!resolveBool){
-            // throw {
-            //     message : "Invalid email"
-            // }
-            res.render('signup', {title : "Create an account", error : "Invalid email"})
+            throw {
+                message : "Invalid email"
+            }
+            // res.render('signup', {title : "Create an account", error : "Invalid email"})
             return;
         }
         const user = await Users.findOne({email : req.body.email})
         if(user){
-            // throw {
-            //     message : "Email already exists"
-            // }
-            res.render('signup', {title : "Create an account", error : "Email already exists"})
+            throw {
+                message : "Email already exists"
+            }
+            // res.render('signup', {title : "Create an account", error : "Email already exists"})
             return;
         }
         const {firstName, lastName, email, password} = req.body
@@ -66,13 +66,13 @@ export async function createUser(req: Request, res: Response){
         })
         const saveUser = await newUser.save()
         if(saveUser){
-            // res.status(201).send(saveUser)
-            res.redirect('/users/login')
+            res.status(201).send(saveUser)
+            // res.redirect('/users/login')
         }else{
-            // throw {
-            //     message : "Unable to save"
-            // }
-            res.render('signup', {title : "Create an account", error : "Unable to save"})
+            throw {
+                message : "Unable to save"
+            }
+            // res.render('signup', {title : "Create an account", error : "Unable to save"})
             return;
         }
     }catch(err){

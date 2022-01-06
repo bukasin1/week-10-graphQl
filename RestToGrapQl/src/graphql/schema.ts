@@ -22,7 +22,6 @@ const query = new GraphQLObjectType({
                 }
             },
             resolve: async(source, args, req) => {
-                console.log(req.user, "user")
                 const user = await checkAuth(req.header('auth'))
                 return await getTodos(args.completed, user)
             }
@@ -92,6 +91,7 @@ const mutation = new GraphQLObjectType({
             },
             resolve: async(parent, args, req) => { 
                 const user = await checkAuth(req.header('auth'))
+                console.log(args.completed, "argument")
                 return await updateTodo(args.id, args.todo, args.completed) 
             }
         },
